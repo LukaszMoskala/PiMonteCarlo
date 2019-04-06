@@ -91,6 +91,37 @@ bool argexist(const string &shortname, const string &longname) {
 int main(int _args, char** _argv) {
     args=_args;
     argv=_argv;
+
+    if(argexist("h","help")) {
+        cerr<<"PiMonteCarlo Copyright (C) 2019 Łukasz Konrad Moskała ukasz_moskala8@tlen.pl"<<endl;
+        cerr<<"This program comes with ABSOLUTELY NO WARRANTY."<<endl;
+        cerr<<"This is free software, and you are welcome to redistribute it"<<endl;
+        cerr<<"under certain conditions; Read attached license file for details."<<endl;
+        cerr<<endl;
+        cerr<<"You should have received a copy of the GNU General Public License"<<endl;
+        cerr<<"along with this program.  If not, see <https://www.gnu.org/licenses/>."<<endl;
+        cerr<<endl;
+
+        cerr<<"Usage: "<<endl;
+        cerr<<" -p --bgpreview      set preview background color  - default: 000000"<<endl;
+        cerr<<" -P --bgprogram      set program background color  - default: 444444"<<endl;
+        cerr<<" -c --fontcolor      set font color                - default: ffffff"<<endl;
+        cerr<<" -C --circlecolor    set circle color              - default: ffff00"<<endl;
+        cerr<<" -W --width          set window width              - default: 1000"<<endl;
+        cerr<<" -H --height         set window height             - default: 1000"<<endl;
+        cerr<<" -n --points         how many points generate      - default: 1000000"<<endl;
+        cerr<<" -d --disp           how often update display      - default: 100 (every 100 points)"<<endl;
+        cerr<<" -f --font           set font to use            [1]- default: <none>"<<endl;
+        cerr<<" -s --fontsize       set font size (char height)[2]- default: 24"<<endl;
+        cerr<<" -F --fullscreen     run in fullscreen mode"<<endl;
+        cerr<<endl;
+        cerr<<"[1]: If not specified, builtin font will be used"<<endl;
+        cerr<<"     example: --font myfancyfont.ttf"<<endl;
+        cerr<<"     Place font in directory with program"<<endl;
+        cerr<<"[2]: Works only if font is specified, otherwise is set to 8"<<endl;
+        return 0;
+    }
+
     al_init();
     al_init_primitives_addon();
     al_init_font_addon();
@@ -106,8 +137,8 @@ int main(int _args, char** _argv) {
     uniform_real_distribution<double> points{-1.0, 1.0};
     uniform_real_distribution<double> colors{0, 255};
     
-    disp_w=atoi(getarg("w","width","1000").c_str());
-    disp_h=atoi(getarg("h","height","1000").c_str());
+    disp_w=atoi(getarg("W","width","1000").c_str());
+    disp_h=atoi(getarg("H","height","1000").c_str());
 
     target_points=strtoul(getarg("n","points","1000000").c_str(), NULL, 10);
     display_every=strtoul(getarg("d","disp","100").c_str(), NULL, 10);
@@ -117,8 +148,10 @@ int main(int _args, char** _argv) {
     preview_x=(disp_w-preview_s)/2;
     preview_y=(disp_h-preview_s)/2;
 
-    //TODO: Load from parameter
-    al_set_new_display_flags(ALLEGRO_WINDOWED);
+    if(argexist("F","fullscreen"))
+        al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+    else
+        al_set_new_display_flags(ALLEGRO_WINDOWED);
     
     disp=al_create_display(disp_w, disp_h);
     if(!disp) {
