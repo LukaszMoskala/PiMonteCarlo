@@ -1,0 +1,11 @@
+#ignore dotfiles
+.*
+#but not gitignore
+!.gitignore
+
+#object files
+*.o
+
+#binary files
+pimontecarlo
+pimontecarlo.exe
