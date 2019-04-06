@@ -34,11 +34,17 @@ double abs_f(double f) {
     return (f<0.0?-f:f);
 }
 
+//if set to false, program will exit gracefully
+bool work=true;
+
+
 int main() {
     al_init();
     al_init_primitives_addon();
     al_init_font_addon();
     
+    al_install_keyboard();
+
     ALLEGRO_COLOR bg_preview=al_map_rgb(0,0,0);
     ALLEGRO_COLOR bg_program=al_map_rgb(64,64,64);
     ALLEGRO_COLOR font_color=al_map_rgb(255,255,255);
@@ -82,12 +88,26 @@ int main() {
     float y;
     ALLEGRO_COLOR c;
     double pi=0;
-    while(1) {
+    ALLEGRO_KEYBOARD_STATE kbstate;
+    while(work) {
         al_set_target_bitmap(preview);
         al_clear_to_color(bg_preview);
         hits=0;
         miss=0;
-        for(uint32_t i=0;i<target_points;i++) {
+        for(uint32_t i=0;i<target_points && work;i++) {
+            al_get_keyboard_state(&kbstate);
+            if(al_key_down(&kbstate, ALLEGRO_KEY_ESCAPE) ||
+               al_key_down(&kbstate, ALLEGRO_KEY_Q)) {
+                work=false;
+                cout<<"Escape pressed, exiting!"<<endl;
+            }
+            if(al_key_down(&kbstate, ALLEGRO_KEY_ENTER)) {
+                cout<<"Restarting!"<<endl;
+                while(al_key_down(&kbstate, ALLEGRO_KEY_ENTER))
+                   al_get_keyboard_state(&kbstate);
+
+                break;
+            }
             x=points(gen);
             y=points(gen);
             miss+=1;
@@ -112,5 +132,6 @@ int main() {
     al_destroy_bitmap(preview);
     al_destroy_display(disp);
     al_destroy_font(font);
+    al_uninstall_keyboard();
     return 0;
 }
