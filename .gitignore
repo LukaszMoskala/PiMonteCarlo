@@ -9,3 +9,6 @@
 #binary files
 pimontecarlo
 pimontecarlo.exe
+
+#font files
+*.ttf

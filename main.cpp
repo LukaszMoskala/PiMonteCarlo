@@ -2,6 +2,7 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <random>
 using namespace std;
 
@@ -77,7 +78,7 @@ int main(int _args, char** _argv) {
     al_init();
     al_init_primitives_addon();
     al_init_font_addon();
-    
+    al_init_ttf_addon();
     al_install_keyboard();
 
     ALLEGRO_COLOR bg_preview=hextocolor(getarg("p","bgpreview","000000"));
@@ -113,8 +114,23 @@ int main(int _args, char** _argv) {
         cout<<__FILE__<<":"<<__LINE__<<" : "<<"Failed to create bitmap!"<<endl;
         return 1;
     }
-    //TODO: Load TTF
-    font=al_create_builtin_font();
+    
+    if(argexist("f","font")) {
+        string f=getarg("f","font","");
+        int size=atoi(getarg("s","fontsize","24").c_str());
+
+        //Why using negative size value?
+        //well, https://www.allegro.cc/manual/5/al_load_ttf_font
+        
+        //"The size parameter determines the size the font will be rendered at,
+        //specified in pixel. The standard font size is measured in units per
+        //EM, if you instead want to specify the size as the total height
+        //of glyphs in pixel, pass it as a negative value."
+        font=al_load_ttf_font(f.c_str(), -size, 0);
+    }
+    //if loading custom font failed, fall back to builtin
+    if(!font)
+        font=al_create_builtin_font();
     if(!font) {
         cout<<__FILE__<<":"<<__LINE__<<" : "<<"Failed to create font!"<<endl;
         return 1;
