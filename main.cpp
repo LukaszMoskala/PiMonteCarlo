@@ -58,6 +58,7 @@ ALLEGRO_COLOR hextocolor(const string& hexstr) {
     if(hexstr.size() != 6) {
         throw new invalid_argument("Hex color is not in 6-character format");
     }
+    //assuming that user isn't dumb, and hexstr is actually HEX
     string r=hexstr.substr(0, 2);
     string g=hexstr.substr(2, 2);
     string b=hexstr.substr(4, 2);
@@ -119,6 +120,9 @@ int main(int _args, char** _argv) {
         cerr<<"     example: --font myfancyfont.ttf"<<endl;
         cerr<<"     Place font in directory with program"<<endl;
         cerr<<"[2]: Works only if font is specified, otherwise is set to 8"<<endl;
+        cerr<<endl;
+        cerr<<"All colors are specified in format"<<endl;
+        cerr<<"    RRGGBB - just like in HTML but without #"<<endl;
         return 0;
     }
 
