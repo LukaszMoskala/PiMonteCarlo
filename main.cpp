@@ -9,9 +9,9 @@ ALLEGRO_FONT *font;
 ALLEGRO_DISPLAY *disp;
 
 //generate this many points before starting again
-uint32_t target_points=1000000; //TODO: Load from parameter
+uint32_t target_points=1000000;
 //display every this many points
-uint32_t display_every=300; //TODO: Load from parameter
+uint32_t display_every=300;
 
 //points that are both in square and circle
 double hits=0;
@@ -19,8 +19,8 @@ double hits=0;
 double miss=0;
 
 //display size
-uint16_t disp_w; //TODO: Load from parameter
-uint16_t disp_h; //TODO: Load from parameter
+uint16_t disp_w;
+uint16_t disp_h;
 
 //preview size
 uint16_t preview_s;
@@ -37,25 +37,64 @@ double abs_f(double f) {
 //if set to false, program will exit gracefully
 bool work=true;
 
+ALLEGRO_COLOR hextocolor(const string& hexstr) {
+    if(hexstr.size() != 6) {
+        throw new invalid_argument("Hex color is not in 6-character format");
+    }
+    string r=hexstr.substr(0, 2);
+    string g=hexstr.substr(2, 2);
+    string b=hexstr.substr(4, 2);
+    return al_map_rgb(strtol(r.c_str(), NULL, 16),
+                      strtol(g.c_str(), NULL, 16),
+                      strtol(b.c_str(), NULL, 16));
+}
+int args;
+char **argv;
+//reads argument from command line, returns defval if doesnt exist
+string getarg(const string &shortname, const string &longname, const string &defval) {
+  for(int i=1;i<args;i++) {
+    string ca(argv[i]);
+    if( ( ca == "--"+longname  || ca == "-"+shortname ) && i+1 < args ) {
+      return string(argv[i+1]);
+    }
+  }
+  return defval;
+}
+//return true if argument exists
+bool argexist(const string &shortname, const string &longname) {
+  for(int i=1;i<args;i++) {
+    string ca(argv[i]);
+    if( ca == "--"+longname  || ca == "-"+shortname ) {
+      return true;
+    }
+  }
+  return false;
+}
 
-int main() {
+int main(int _args, char** _argv) {
+    args=_args;
+    argv=_argv;
     al_init();
     al_init_primitives_addon();
     al_init_font_addon();
     
     al_install_keyboard();
 
-    ALLEGRO_COLOR bg_preview=al_map_rgb(0,0,0);
-    ALLEGRO_COLOR bg_program=al_map_rgb(64,64,64);
-    ALLEGRO_COLOR font_color=al_map_rgb(255,255,255);
-    ALLEGRO_COLOR circle_color=al_map_rgb(255,255,0);
+    ALLEGRO_COLOR bg_preview=hextocolor(getarg("p","bgpreview","000000"));
+    ALLEGRO_COLOR bg_program=hextocolor(getarg("P","bgprogram","444444"));
+    ALLEGRO_COLOR font_color=hextocolor(getarg("c","fontcolor","ffffff"));
+    ALLEGRO_COLOR circle_color=hextocolor(getarg("C","circlecolor","ffff00"));;
     //random number generator
     mt19937 gen{random_device{}()};
     uniform_real_distribution<double> points{-1.0, 1.0};
     uniform_real_distribution<double> colors{0, 255};
     
-    disp_w=1000;
-    disp_h=1000;
+    disp_w=atoi(getarg("w","width","1000").c_str());
+    disp_h=atoi(getarg("h","height","1000").c_str());
+
+    target_points=strtoul(getarg("n","points","1000000").c_str(), NULL, 10);
+    display_every=strtoul(getarg("d","disp","100").c_str(), NULL, 10);
+    
 
     preview_s=((disp_w>disp_h)?disp_h:disp_w)*0.8;
     preview_x=(disp_w-preview_s)/2;
