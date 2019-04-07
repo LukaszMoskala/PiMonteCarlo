@@ -17,15 +17,17 @@ else
 	CXXFLAGS+=-DUSE_SIGNALS=1
 endif
 
-all: pimontecarlo$(EXTENSION)
+PROGNAME=pimontecarlo$(EXTENSION)
+
+all: $(PROGNAME)
 
 pimontecarlo.o: main.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $^
-pimontecarlo: pimontecarlo.o
+$(PROGNAME): pimontecarlo.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(CXXLIBS)
 clean:
 	rm -f pimontecarlo.o
 clean-bin:
-	rm -f pimontecarlo$(EXTENSION)
-install: pimontecarlo$(EXTENSION)
+	rm -f $(PROGNAME)
+install: $(PROGNAME)
 	install -m 755 $^ $(PREFIX)
