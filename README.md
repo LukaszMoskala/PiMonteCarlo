@@ -25,3 +25,10 @@ Well, probably you should download `main.cpp` and compile it in your IDE.
 
 You probably want to link `-lallegro_monolith` and copy `allegro_monolith_version.dll`
 to folder with program
+
+# Using custom font
+To use custom font, place `TTF` file in program's CWD and use `-f font.ttf`
+Program will NOT load system fonts!
+
+I am not distributing fonts with this program because of license issues,
+you have to download them on your own
