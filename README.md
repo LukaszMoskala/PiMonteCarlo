@@ -4,31 +4,33 @@ But it had problem with screen tearing. So I figured out that
 I'll fix that by creating better one from scratch. I also used
 cross-platform approach rather than windows-only like the other
 did.
-# Installing dependencies on GNU/Linux
+# Building
+## GNU/Linux
 Install `allegro5`, either by compilling it yourself, or using
 package manager.
-## Ubuntu
-`sudo apt install liballegro5-dev`
-## Archlinux
-`sudo pacman -S allegro`
-# Installing dependencies on Windows
-See [Allegro5 installation manual](https://www.allegro.cc/manual/5/install/windows.html)
-# Compilation on GNU/Linux
+
+Ubuntu: `sudo apt install liballegro5-dev`
+
+Archlinux: `sudo pacman -S allegro`
+
+After installing dependencies, download sources and build program
 ```
 git clone https://github.com/LukaszMoskala/PiMonteCarlo.git
 cd PiMonteCarlo
 make
-sudo make install
+./pimontecarlo
 ```
-# Compillation on Windows
-Well, probably you should download `main.cpp` and compile it in your IDE.
+And, to install it, if you wish, `sudo make install`
+## Windows
+You have to install `Allegro5` on your own.
+See [Allegro5 installation manual](https://www.allegro.cc/manual/5/install/windows.html)
 
-You probably want to link `-lallegro_monolith` and copy `allegro_monolith_version.dll`
-to folder with program
+Then, you can try just using `make` to compile, but it may not work, because, well, windows doing windows things.
+
+If that's the case, open `main.cpp` in your IDE, and link `allegro_monolith`, and hope that it'll work.
+I have no way to test this.
 
 # Using custom font
-To use custom font, place `TTF` file in program's CWD and use `-f font.ttf`
-Program will NOT load system fonts!
+To use custom font, place `font.ttf` in program working directory and it'll pick it up automatically.
 
-I am not distributing fonts with this program because of license issues,
-you have to download them on your own
+You can use other font name, just specify `-f customfont.ttf` and you'r good to go.
