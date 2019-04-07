@@ -32,8 +32,6 @@ uint32_t display_every=300;
 
 //points that are both in square and circle
 double hits=0;
-//points that are only in square
-double miss=0;
 
 //display size
 uint16_t disp_w;
@@ -204,7 +202,6 @@ int main(int _args, char** _argv) {
         al_set_target_bitmap(preview);
         al_clear_to_color(bg_preview);
         hits=0;
-        miss=0;
         for(uint32_t i=0;i<target_points && work;i++) {
             al_get_keyboard_state(&kbstate);
             if(al_key_down(&kbstate, ALLEGRO_KEY_ESCAPE) ||
@@ -221,7 +218,6 @@ int main(int _args, char** _argv) {
             }
             x=points(gen);
             y=points(gen);
-            miss+=1;
             if(x*x+y*y <= 1) {
                 hits+=1;
             }
@@ -231,7 +227,7 @@ int main(int _args, char** _argv) {
                 al_draw_circle(preview_s/2.0, preview_s/2.0, preview_s/2.0, circle_color, 3);
                 al_set_target_backbuffer(disp);
                 al_clear_to_color(bg_program);
-                pi=4.0*hits/miss;
+                pi=4.0*hits/double(i+1);
                 al_draw_textf(font, font_color, 0, 0, 0, "Points: %u/%u",i, target_points);
                 al_draw_textf(font, font_color, 0, fh, 0, "PI: %f", pi);
                 al_draw_textf(font, font_color, 0, fh*2, 0, "Error: %f%%", 100.0*(abs_f(pi-M_PI)/M_PI));
