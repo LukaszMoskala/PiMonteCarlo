@@ -3,9 +3,9 @@ CXXFLAGS=--std=c++17 -Wall
 CXXLIBS=-lallegro -lallegro_primitives -lallegro_font -lallegro_ttf
 #Installation prefix
 PREFIX=/usr/local/bin
-#Puste rozszerzenie dla GNU/Linux
+
+#Dont use extension on GNU/Linux, exe on windows
 EXTENSION=
-#Dla windowsa .exe
 ifeq ($(OS),Windows_NT)
     EXTENSION=.exe
 endif
