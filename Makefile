@@ -1,6 +1,8 @@
 CXX=g++
 CXXFLAGS=--std=c++17 -Wall
 CXXLIBS=-lallegro -lallegro_primitives -lallegro_font -lallegro_ttf
+#Installation prefix
+PREFIX=/usr/local/bin
 #Puste rozszerzenie dla GNU/Linux
 EXTENSION=
 #Dla windowsa .exe
@@ -18,3 +20,5 @@ clean:
 	rm -f pimontecarlo.o
 clean-bin:
 	rm -f pimontecarlo$(EXTENSION)
+install: pimontecarlo$(EXTENSION)
+	install -m 755 $^ $(PREFIX)
