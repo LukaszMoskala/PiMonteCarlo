@@ -225,12 +225,12 @@ int main(int _args, char** _argv) {
                 al_set_target_backbuffer(disp);
                 al_clear_to_color(bg_program);
                 pi=4.0*hits/double(i+1);
-                al_draw_textf(font, font_color, 0, 0, 0, "Points: %u/%u",i, target_points);
-                al_draw_textf(font, font_color, 0, fh, 0, "PI: %f", pi);
+                al_draw_textf(font, font_color, 0, 0, 0,    "Points: %u/%u",i, target_points);
+                al_draw_textf(font, font_color, 0, fh, 0,   "PI: %f", pi);
                 al_draw_textf(font, font_color, 0, fh*2, 0, "Error: %f%%", 100.0*(abs_f(pi-M_PI)/M_PI));
                 al_draw_bitmap(preview, preview_x, preview_y, 0);
                 al_draw_text(font, font_color, 0, disp_h-2*fh, 0, "(C) 2019 Łukasz Konrad Moskała");
-                al_draw_text(font, font_color, 0, disp_h-fh, 0, "github.com/LukaszMoskala/PiMonteCarlo");
+                al_draw_text(font, font_color, 0, disp_h-fh, 0,   "github.com/LukaszMoskala/PiMonteCarlo");
                 al_flip_display();
                 al_set_target_bitmap(preview);
             }
