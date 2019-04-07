@@ -167,20 +167,17 @@ int main(int _args, char** _argv) {
         cout<<__FILE__<<":"<<__LINE__<<" : "<<"Failed to create bitmap!"<<endl;
         return 1;
     }
-    
-    if(argexist("f","font")) {
-        string f=getarg("f","font","");
-        int size=atoi(getarg("s","fontsize","24").c_str());
-
-        //Why using negative size value?
-        //well, https://www.allegro.cc/manual/5/al_load_ttf_font
-        
-        //"The size parameter determines the size the font will be rendered at,
-        //specified in pixel. The standard font size is measured in units per
-        //EM, if you instead want to specify the size as the total height
-        //of glyphs in pixel, pass it as a negative value."
-        font=al_load_ttf_font(f.c_str(), -size, 0);
-    }
+    //try to load font.ttf if no font was specified
+    string f=getarg("f","font","font.ttf");
+    int size=atoi(getarg("s","fontsize","24").c_str());
+    //Why using negative size value?
+    //well, https://www.allegro.cc/manual/5/al_load_ttf_font
+            
+    //"The size parameter determines the size the font will be rendered at,
+    //specified in pixel. The standard font size is measured in units per
+    //EM, if you instead want to specify the size as the total height
+    //of glyphs in pixel, pass it as a negative value."
+    font=al_load_ttf_font(f.c_str(), -size, 0);
     //if loading custom font failed, fall back to builtin
     if(!font) {
         font=al_create_builtin_font();
