@@ -30,6 +30,10 @@ uint32_t target_points=1000000;
 //display every this many points
 uint32_t display_every=300;
 
+//thickness of circle
+//purely visual, does not affects calculations
+float thicc;
+
 //points that are both in square and circle
 double hits=0;
 
@@ -126,6 +130,7 @@ int main(int _args, char** _argv) {
         cerr<<" -f --font           set font to use            [1]- default: <none>"<<endl;
         cerr<<" -s --fontsize       set font size (char height)[2]- default: 24"<<endl;
         cerr<<" -F --fullscreen     run in fullscreen mode"<<endl;
+        cerr<<" -t --thickness      circle thickness - default: 3"<<endl;
         cerr<<endl;
         cerr<<"[1]: If not specified, builtin font will be used"<<endl;
         cerr<<"     example: --font myfancyfont.ttf"<<endl;
@@ -161,6 +166,7 @@ int main(int _args, char** _argv) {
     target_points=strtoul(getarg("n","points","1000000").c_str(), NULL, 10);
     display_every=strtoul(getarg("d","disp","100").c_str(), NULL, 10);
     
+    thicc=atof(getarg("t","thickness", "3").c_str());
 
     preview_s=((disp_w>disp_h)?disp_h:disp_w)*0.8;
     preview_x=(disp_w-preview_s)/2;
@@ -237,7 +243,7 @@ int main(int _args, char** _argv) {
             c=al_map_rgb(colors(gen),colors(gen),colors(gen));
             al_draw_pixel(x*float(preview_s), y*float(preview_s), c);
             if(i%display_every == 0) {
-                al_draw_circle(preview_s/2.0, preview_s/2.0, preview_s/2.0, circle_color, 3);
+                al_draw_circle(preview_s/2.0, preview_s/2.0, preview_s/2.0, circle_color, thicc);
                 al_set_target_backbuffer(disp);
                 al_clear_to_color(bg_program);
                 pi=4.0*hits/double(i+1);
