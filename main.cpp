@@ -152,10 +152,12 @@ int main(int _args, char** _argv) {
     preview_x=(disp_w-preview_s)/2;
     preview_y=(disp_h-preview_s)/2;
 
-    if(argexist("F","fullscreen"))
+    if(argexist("F","fullscreen")) {
         al_set_new_display_flags(ALLEGRO_FULLSCREEN);
-    else
+    }
+    else {
         al_set_new_display_flags(ALLEGRO_WINDOWED);
+    }
     
     disp=al_create_display(disp_w, disp_h);
     if(!disp) {
@@ -182,8 +184,9 @@ int main(int _args, char** _argv) {
         font=al_load_ttf_font(f.c_str(), -size, 0);
     }
     //if loading custom font failed, fall back to builtin
-    if(!font)
+    if(!font) {
         font=al_create_builtin_font();
+    }
     if(!font) {
         cout<<__FILE__<<":"<<__LINE__<<" : "<<"Failed to create font!"<<endl;
         return 1;
@@ -219,8 +222,9 @@ int main(int _args, char** _argv) {
             x=points(gen);
             y=points(gen);
             miss+=1;
-            if(x*x+y*y <= 1)
+            if(x*x+y*y <= 1) {
                 hits+=1;
+            }
             c=al_map_rgb(colors(gen),colors(gen),colors(gen));
             al_draw_pixel(x*float(preview_s), y*float(preview_s), c);
             if(i%display_every == 0) {
