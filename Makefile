@@ -4,10 +4,17 @@ CXXLIBS=-lallegro -lallegro_primitives -lallegro_font -lallegro_ttf
 #Installation prefix
 PREFIX=/usr/local/bin
 
-#Dont use extension on GNU/Linux, exe on windows
 EXTENSION=
 ifeq ($(OS),Windows_NT)
+	#Windows-specific code
+
+	#Use .exe extension
     EXTENSION=.exe
+else
+	#Non-windows code
+
+	#Use signals
+	CXXFLAGS+=-DUSE_SIGNALS=1
 endif
 
 all: pimontecarlo$(EXTENSION)

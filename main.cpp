@@ -52,6 +52,19 @@ double abs_f(double f) {
 //if set to false, program will exit gracefully
 bool work=true;
 
+#ifdef USE_SIGNALS
+//signal handling code based on
+//https://en.cppreference.com/w/cpp/utility/program/signal
+#include <csignal>
+void signal_handler(int signal)
+{
+  if(signal == SIGINT || signal == SIGTERM) {
+      work=false;
+      cout<<"Received SIGINT or SIGTERM, exiting gracefully"<<endl;
+  }
+}
+#endif
+
 ALLEGRO_COLOR hextocolor(const string& hexstr) {
     if(hexstr.size() != 6) {
         throw new invalid_argument("Hex color is not in 6-character format");
@@ -123,7 +136,10 @@ int main(int _args, char** _argv) {
         cerr<<"    RRGGBB - just like in HTML but without #"<<endl;
         return 0;
     }
-
+    #ifdef USE_SIGNALS
+    signal(SIGINT, signal_handler);
+    signal(SIGTERM, signal_handler);
+    #endif
     al_init();
     al_init_primitives_addon();
     al_init_font_addon();
